@@ -28,7 +28,7 @@ public class StemmingBolt extends BaseBasicBolt
         List<String> stopWords = StopWords.getWords();
         for (String word : stopWords)
         {
-            text = text.replaceAll("\\word\\b", "");
+            text = text.replaceAll("\\b" + word + "\\b", "");
         }
         collector.emit(new Values(id, text));
     }
