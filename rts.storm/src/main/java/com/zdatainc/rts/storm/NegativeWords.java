@@ -23,7 +23,7 @@ public class NegativeWords implements Serializable
         {
             rd = new BufferedReader(
                 new InputStreamReader(
-                    this.getClass().getResourceAsStream("/pos-words.txt")));
+                    this.getClass().getResourceAsStream("/neg-words.txt")));
             String line;
             while ((line = rd.readLine()) != null)
                 this.negWords.add(line);
