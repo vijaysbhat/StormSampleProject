@@ -1,0 +1,3 @@
+[submodule "SimpleKafkaProducer"]
+	path = SimpleKafkaProducer
+	url = git://github.com/zdata-inc/SimpleKafkaProducer.git
