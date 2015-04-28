@@ -27,8 +27,12 @@ public class TwitterFilterBolt extends BaseBasicBolt
 
     public void execute(Tuple input, BasicOutputCollector collector)
     {
-        LOGGER.debug("filttering incoming tweets");
-        String json = input.getString(0);
+      String text = input.getString(0);
+      Long id = new Long(text.hashCode());
+      LOGGER.error("TwitterFilterBolt : filtering incoming tweets " + text);
+      collector.emit(new Values(id, text));
+
+            /*
         try
         {
             JsonNode root = mapper.readValue(json, JsonNode.class);
@@ -54,6 +58,7 @@ public class TwitterFilterBolt extends BaseBasicBolt
             LOGGER.error("IO error while filtering tweets", ex);
             LOGGER.trace(null, ex);
         }
+            */
     }
 
     public Map<String, Object> getComponenetConfiguration() { return null; }

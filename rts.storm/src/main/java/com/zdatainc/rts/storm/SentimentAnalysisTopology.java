@@ -49,12 +49,16 @@ public class SentimentAnalysisTopology
         SpoutConfig kafkaConf = new SpoutConfig(
             new ZkHosts(Properties.getString("rts.storm.zkhosts")),
             KAFKA_TOPIC,
-            "/kafka",
+            "/kafka-spout",
             "KafkaSpout");
         kafkaConf.scheme = new SchemeAsMultiScheme(new StringScheme());
+        //kafkaConf.startOffsetTime = kafka.api.OffsetRequest.EarliestTime();
+      //kafkaConf.forceFromStart = true;
+
         TopologyBuilder topology = new TopologyBuilder();
 
-        topology.setSpout("kafka_spout", new KafkaSpout(kafkaConf), 4);
+        topology.setSpout("kafka_spout", new KafkaSpout(kafkaConf), 1);
+
 
         topology.setBolt("twitter_filter", new TwitterFilterBolt(), 4)
                 .shuffleGrouping("kafka_spout");
@@ -77,10 +81,11 @@ public class SentimentAnalysisTopology
         topology.setBolt("score", new SentimentScoringBolt(), 4)
                 .shuffleGrouping("join");
 
-        topology.setBolt("hdfs", new HDFSBolt(), 4)
-                .shuffleGrouping("score");
+        //topology.setBolt("hdfs", new HDFSBolt(), 4)
+        //        .shuffleGrouping("score");
         topology.setBolt("nodejs", new NodeNotifierBolt(), 4)
                 .shuffleGrouping("score");
+
 
         return topology.createTopology();
     }
